@@ -26,15 +26,21 @@ def compare(username: str):
     # Get a list of the user's friends
     friends = get_user_friends(username, headers)
 
+    if "error" in friends:
+        return jsonify(friends), 404
+
     # Get contributions for each friend
     friends_commits = []
     for friend in friends:
-        friends_commits.append(get_user_commits(friend["login"], headers))
+        result = get_user_commits(friend["login"], headers)
+        if "error" in result:
+            continue
+        friends_commits.append(result)
 
     # Get contributions for user
     user_commits = get_user_commits(username, headers)
-    
-    return friends_commits
+
+    return jsonify(friends_commits)
 
 
 def get_user_friends(username: str, headers: dict):
@@ -49,7 +55,7 @@ def get_user_friends(username: str, headers: dict):
     response = requests.get(GITHUB_FOLLOWING_URL, headers=headers)
 
     if response.status_code != 200:
-        return jsonify({ "error": "Failed to fetch user's friends" }), 404
+        return { "error": "Failed to fetch user's friends" }
 
     friends = response.json()
 
@@ -83,19 +89,19 @@ def get_user_commits(username: str, headers: dict):
     )
 
     if response.status_code != 200:
-        return jsonify({ "error": "GitHub API request failed" }), 502
+        return { "error": "GitHub API request failed" }
 
     data = response.json()
 
     if "errors" in data:
-        return jsonify({ "error": data["errors"][0]["message"] }), 404
+        return { "error": data["errors"][0]["message"] }
 
     user = data.get("data", {}).get("user")
 
     if not user:
-        return jsonify({ "error": "User not found" }), 404
+        return { "error": "User not found" }
 
     contributions = user["contributionsCollection"]
     total_commits = contributions["totalCommitContributions"] + contributions["restrictedContributionsCount"]
 
-    return username, total_commits
+    return { "username": username, "commits": total_commits }

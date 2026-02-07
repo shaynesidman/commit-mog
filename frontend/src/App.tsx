@@ -20,6 +20,7 @@ export default function App() {
             if (!response.ok) {
                 throw new Error(data.error || "Failed to fetch friends");
             }
+            console.log(data)
             setFriendsData(data);
         } catch (error) {
             console.error(error);
