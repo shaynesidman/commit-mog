@@ -35,12 +35,23 @@ def compare(username: str):
         result = get_user_commits(friend["login"], headers)
         if "error" in result:
             continue
+        result["avatar_url"] = friend["avatar_url"]
+        result["profile_url"] = friend["html_url"]
         friends_commits.append(result)
 
     # Get contributions for user
     user_commits = get_user_commits(username, headers)
+    if "error" in user_commits:
+        return jsonify(user_commits), 404
 
-    return jsonify(friends_commits)
+    user = get_user_data(username, headers)
+    if "error" in user:
+        return jsonify(user), 404
+
+    user_commits["avatar_url"] = user.get("avatar_url")
+    user_commits["profile_url"] = user.get("html_url")
+
+    return jsonify({ "user": user_commits, "friends": friends_commits })
 
 
 def get_user_friends(username: str, headers: dict):
@@ -60,6 +71,25 @@ def get_user_friends(username: str, headers: dict):
     friends = response.json()
 
     return friends
+
+
+def get_user_data(username: str, headers: dict):
+    """
+    Fetch the user's data from GitHub
+    Parameters: username (string)
+    Returns: List of user objects
+    """
+
+    GITHUB_USER_URL = f"https://api.github.com/users/{username}"
+    
+    response = requests.get(GITHUB_USER_URL, headers=headers)
+
+    if response.status_code != 200:
+        return { "error": "Failed to fetch user's data" }
+
+    user = response.json()
+
+    return user
 
 
 def get_user_commits(username: str, headers: dict):
