@@ -7,7 +7,9 @@ import { FriendCard, type FriendData } from "./components/friend-card";
 export default function App() {
     const [username, setUsername] = useState("");
     const [userData, setUserData] = useState<FriendData | null>(null);
-    const [friendsData, setFriendsData] = useState<FriendData[]>([]);
+    const [moggers, setMoggers] = useState<FriendData[]>([]);
+    const [mogged, setMogged] = useState<FriendData[]>([]); 
+    const [equals, setEquals] = useState<FriendData[]>([]); 
 
     const fetchFriends = async () => {
         try {
@@ -17,8 +19,17 @@ export default function App() {
             if (!response.ok) {
                 throw new Error(data.error || "Failed to fetch friends");
             }
+            
             setUserData(data.user);
-            setFriendsData(data.friends);
+            setMoggers(data.friends.filter((friend: FriendData) => {
+                return friend.commits > data.user.commits;
+            }));
+            setMogged(data.friends.filter((friend: FriendData) => {
+                return friend.commits < data.user.commits;
+            }));
+            setEquals(data.friends.filter((friend: FriendData) => {
+                return friend.commits == data.user.commits;
+            }));
         } catch (error) {
             console.error(error);
         }
@@ -38,13 +49,38 @@ export default function App() {
                 {userData && (
                     <FriendCard friend={userData} variant="featured" />
                 )}
-                {friendsData.length > 0 && (
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                        {friendsData.map((friend) => (
-                            <FriendCard key={friend.username} friend={friend} />
-                        ))}
-                    </div>
-                )}
+                <div className="flex flex-col gap-4">
+                    {moggers.length > 0 && 
+                        <div className="flex flex-col gap-2">
+                            <label>Moggers</label>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {moggers.map((friend) => (
+                                    <FriendCard key={friend.username} friend={friend} />
+                                ))}
+                            </div>
+                        </div>
+                    }
+                    {mogged.length > 0 && 
+                        <div className="flex flex-col gap-2">
+                            <label>Mogged</label>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {mogged.map((friend) => (
+                                    <FriendCard key={friend.username} friend={friend} />
+                                ))}
+                            </div>
+                        </div>
+                    }
+                    {equals.length > 0 && 
+                        <div className="flex flex-col gap-2">
+                            <label>Equals</label>
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                                {equals.map((friend) => (
+                                    <FriendCard key={friend.username} friend={friend} />
+                                ))}
+                            </div>
+                        </div>
+                    }
+                </div>
             </section>
         </main>
     );
