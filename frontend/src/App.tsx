@@ -6,6 +6,7 @@ import { FriendCard, type FriendData } from "./components/friend-card";
 
 export default function App() {
     const [username, setUsername] = useState("");
+    const [userData, setUserData] = useState<FriendData | null>(null);
     const [friendsData, setFriendsData] = useState<FriendData[]>([]);
 
     const fetchFriends = async () => {
@@ -16,8 +17,8 @@ export default function App() {
             if (!response.ok) {
                 throw new Error(data.error || "Failed to fetch friends");
             }
-            console.log(data)
-            setFriendsData(data);
+            setUserData(data.user);
+            setFriendsData(data.friends);
         } catch (error) {
             console.error(error);
         }
@@ -34,6 +35,9 @@ export default function App() {
                     />
                     <Button onClick={fetchFriends}>Mog</Button>
                 </Field>
+                {userData && (
+                    <FriendCard friend={userData} variant="featured" />
+                )}
                 {friendsData.length > 0 && (
                     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                         {friendsData.map((friend) => (

@@ -8,18 +8,29 @@ export type FriendData = {
     profile_url?: string;
 };
 
-export function FriendCard({ friend }: { friend: FriendData }) {
+export function FriendCard({
+    friend,
+    variant = "default",
+}: {
+    friend: FriendData;
+    variant?: "default" | "featured";
+}) {
+    const isFeatured = variant === "featured";
+
     return (
-        <Card className="w-full">
+        <Card className={isFeatured ? "w-full col-span-full" : "w-full"}>
             <CardHeader className="flex-row items-center gap-4">
-                <Avatar size="lg">
+                <Avatar
+                    size="lg"
+                    className={isFeatured ? "!size-16" : undefined}
+                >
                     <AvatarImage src={friend.avatar_url} alt={friend.username} />
                     <AvatarFallback>
                         {friend.username.slice(0, 2).toUpperCase()}
                     </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col gap-1">
-                    <CardTitle>
+                    <CardTitle className={isFeatured ? "text-xl" : undefined}>
                         {friend.profile_url ? (
                             <a
                                 href={friend.profile_url}
@@ -37,8 +48,12 @@ export function FriendCard({ friend }: { friend: FriendData }) {
             </CardHeader>
             <CardContent>
                 <div className="flex items-center justify-between">
-                    <span className="text-sm text-muted-foreground">Commits this year</span>
-                    <span className="text-2xl font-bold">{friend.commits.toLocaleString()}</span>
+                    <span className={isFeatured ? "text-base text-muted-foreground" : "text-sm text-muted-foreground"}>
+                        Commits this year
+                    </span>
+                    <span className={isFeatured ? "text-4xl font-bold" : "text-2xl font-bold"}>
+                        {friend.commits.toLocaleString()}
+                    </span>
                 </div>
             </CardContent>
         </Card>
