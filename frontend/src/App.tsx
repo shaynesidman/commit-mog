@@ -3,15 +3,18 @@ import { Input } from "./components/ui/input";
 import { Field } from "./components/ui/field";
 import { Button } from "./components/ui/button";
 import { FriendCard, type FriendData } from "./components/friend-card";
+import { Spinner } from "./components/ui/spinner";
 
 export default function App() {
     const [username, setUsername] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [userData, setUserData] = useState<FriendData | null>(null);
     const [moggers, setMoggers] = useState<FriendData[]>([]);
     const [mogged, setMogged] = useState<FriendData[]>([]); 
     const [equals, setEquals] = useState<FriendData[]>([]); 
 
     const fetchFriends = async () => {
+        setIsLoading(true);
         try {
             const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${username}`);
             const data = await response.json();
@@ -32,12 +35,14 @@ export default function App() {
             }));
         } catch (error) {
             console.error(error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
     return (
         <main className="min-h-screen w-full p-8">
-            <section className="mx-auto max-w-4xl flex flex-col gap-8">
+            {!isLoading && <section className="mx-auto max-w-4xl flex flex-col gap-8">
                 <Field orientation="horizontal">
                     <Input
                         type="search"
@@ -81,7 +86,8 @@ export default function App() {
                         </div>
                     }
                 </div>
-            </section>
+            </section>}
+            {isLoading && <Spinner />}
         </main>
     );
 }
