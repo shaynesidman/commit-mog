@@ -41,8 +41,8 @@ export default function App() {
     }
 
     return (
-        <main className="w-full p-8">
-            {!isLoading && <section className="min-h-screen mx-auto max-w-4xl flex flex-col justify-center gap-8">
+        <main className="w-full">
+            {!isLoading && <section className="min-h-screen mx-auto max-w-4xl flex flex-col justify-center items-center gap-8 p-8">
                 <Field orientation="horizontal">
                     <Input
                         type="search"
@@ -87,7 +87,7 @@ export default function App() {
                     }
                 </div>
             </section>}
-            {isLoading && <section className="min-h-screen mx-auto max-w-4xl flex flex-col justify-center gap-8">
+            {isLoading && <section className="min-h-screen mx-auto max-w-4xl flex flex-col justify-center items-center gap-8">
                 <Spinner />
             </section>}
         </main>
