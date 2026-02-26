@@ -45,6 +45,7 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: Fr
                             title={tab.title}
                             description={tab.description}
                             userCommits={userCommits}
+                            tab={tab.value}
                         />
                     </TabsContent>
                 ))}
