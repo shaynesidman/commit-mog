@@ -9,43 +9,37 @@ interface FriendsTabsProps {
     userCommits: number;
 }
 
+const TAB_CONFIG = [
+    { value: "moggers", label: "Moggers", title: "Moggers", description: "Here is who mogged you" },
+    { value: "mogged",  label: "Mogged",  title: "Mogged",  description: "Here is who you mogged" },
+    { value: "equals",  label: "Equals",  title: "Equals",  description: "Here is who is even with you" },
+] as const;
+
 export function FriendsTabs({ moggers, mogged, equals, userCommits }: FriendsTabsProps) {
-    if (moggers.length === 0 && mogged.length === 0 && equals.length === 0) {
-        return null;
-    }
+    const friendMap = { moggers, mogged, equals };
+
+    const activeTabs = TAB_CONFIG.filter(tab => friendMap[tab.value].length > 0);
+
+    if (activeTabs.length === 0) return null;
 
     return (
         <div className="flex flex-col gap-4 max-w-xl">
-            <Tabs>
+            <Tabs defaultValue={activeTabs[0].value}>
                 <TabsList>
-                    <TabsTrigger value="moggers">Moggers</TabsTrigger>
-                    <TabsTrigger value="mogged">Mogged</TabsTrigger>
-                    <TabsTrigger value="equals">Equals</TabsTrigger>
+                    {activeTabs.map(tab => (
+                        <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+                    ))}
                 </TabsList>
-                <TabsContent value="moggers">
-                    <FriendCarousel
-                        friends={moggers}
-                        title="Moggers"
-                        description="Here is who mogged you"
-                        userCommits={userCommits}
-                    />
-                </TabsContent>
-                <TabsContent value="mogged">
-                    <FriendCarousel
-                        friends={mogged}
-                        title="Mogged"
-                        description="Here is who you mogged"
-                        userCommits={userCommits}
-                    />
-                </TabsContent>
-                <TabsContent value="equals">
-                    <FriendCarousel
-                        friends={equals}
-                        title="Equals"
-                        description="Here is who is even with you"
-                        userCommits={userCommits}
-                    />
-                </TabsContent>
+                {activeTabs.map(tab => (
+                    <TabsContent key={tab.value} value={tab.value}>
+                        <FriendCarousel
+                            friends={friendMap[tab.value]}
+                            title={tab.title}
+                            description={tab.description}
+                            userCommits={userCommits}
+                        />
+                    </TabsContent>
+                ))}
             </Tabs>
         </div>
     );

@@ -9,8 +9,8 @@ export default function App() {
     return (
         <main className="w-full pt-8">
             {!isLoading && (
-                <section className="min-h-screen mx-auto max-w-4xl flex flex-col justify-center items-center gap-8">
-                    <SearchBar onChange={setUsername} onSubmit={fetchFriends} />
+                <section className="min-h-screen mx-auto max-w-xl flex flex-col justify-center items-center gap-8">
+                    {!userData && <SearchBar onChange={setUsername} onSubmit={fetchFriends} />}
                     {userData && (
                         <FriendsTabs
                             moggers={moggers}

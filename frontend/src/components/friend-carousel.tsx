@@ -25,7 +25,7 @@ export function FriendCarousel({ friends, title, description, userCommits }: Fri
     return (
         <Card className="px-10">
             <CardHeader className="flex flex-row items-start justify-between">
-                <div>
+                <div className="space-y-2">
                     <CardTitle>{title}</CardTitle>
                     <CardDescription>{description}</CardDescription>
                 </div>
