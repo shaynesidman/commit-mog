@@ -18,14 +18,23 @@ interface FriendCarouselProps {
     friends: FriendData[];
     title: string;
     description: string;
+    userCommits?: number;
 }
 
-export function FriendCarousel({ friends, title, description }: FriendCarouselProps) {
+export function FriendCarousel({ friends, title, description, userCommits }: FriendCarouselProps) {
     return (
         <Card className="px-10">
-            <CardHeader>
-                <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
+            <CardHeader className="flex flex-row items-start justify-between">
+                <div>
+                    <CardTitle>{title}</CardTitle>
+                    <CardDescription>{description}</CardDescription>
+                </div>
+                {userCommits !== undefined && (
+                    <div className="text-right">
+                        <p className="text-xs text-muted-foreground">Your commits</p>
+                        <p className="text-2xl font-bold">{userCommits.toLocaleString()}</p>
+                    </div>
+                )}
             </CardHeader>
             <CardContent>
                 <Carousel>

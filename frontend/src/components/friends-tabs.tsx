@@ -6,15 +6,16 @@ interface FriendsTabsProps {
     moggers: FriendData[];
     mogged: FriendData[];
     equals: FriendData[];
+    userCommits: number;
 }
 
-export function FriendsTabs({ moggers, mogged, equals }: FriendsTabsProps) {
+export function FriendsTabs({ moggers, mogged, equals, userCommits }: FriendsTabsProps) {
     if (moggers.length === 0 && mogged.length === 0 && equals.length === 0) {
         return null;
     }
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 max-w-xl">
             <Tabs>
                 <TabsList>
                     <TabsTrigger value="moggers">Moggers</TabsTrigger>
@@ -26,6 +27,7 @@ export function FriendsTabs({ moggers, mogged, equals }: FriendsTabsProps) {
                         friends={moggers}
                         title="Moggers"
                         description="Here is who mogged you"
+                        userCommits={userCommits}
                     />
                 </TabsContent>
                 <TabsContent value="mogged">
@@ -33,6 +35,7 @@ export function FriendsTabs({ moggers, mogged, equals }: FriendsTabsProps) {
                         friends={mogged}
                         title="Mogged"
                         description="Here is who you mogged"
+                        userCommits={userCommits}
                     />
                 </TabsContent>
                 <TabsContent value="equals">
@@ -40,6 +43,7 @@ export function FriendsTabs({ moggers, mogged, equals }: FriendsTabsProps) {
                         friends={equals}
                         title="Equals"
                         description="Here is who is even with you"
+                        userCommits={userCommits}
                     />
                 </TabsContent>
             </Tabs>
