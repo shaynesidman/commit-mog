@@ -14,13 +14,17 @@ const MESSAGES: Record<Tab, Array<(name: string) => string>> = {
         (name) => `Cortisol spike incoming. ${name} commit-mogged you.`,
         (name) => `You have to be jestermaxxing because ${name} mogged you.`,
         (name) => `${name} mogged you. h00pify is making a video on this as we speak. Cue the bells.`,
-        (name) => `Call #2 ranked chad to avenge you because you got mogged by ${name}.`
+        (name) => `Call #2 ranked chad to avenge you because you got mogged by ${name}.`,
+        (name) => `You're a mid-tier normie. Mogged by ${name}.`
     ],
     mogged: [
-        (name) => `You mogged ${name}. Stay humble.`,
+        (name) => `This is prime Marlon-level mogging. You ruined ${name}.`,
+        (name) => `You're swe-maxxing. Tell ${name} to make some more contributions.`,
+        (name) => `Tell ${name} to get to bonesmashing.`,
+        (name) => `You're a gigachad. ${name} is a sub-5 committer.`
     ],
     equals: [
-        (name) => `${name} is on your level. Respect.`,
+        (name) => `You and ${name} are in a mog-off. Make a contribution to mog.`,
     ],
 };
 
