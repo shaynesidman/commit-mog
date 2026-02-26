@@ -1,5 +1,7 @@
+import { ArrowLeft } from "lucide-react";
 import { type FriendData } from "./friend-card";
 import { FriendCarousel } from "./friend-carousel";
+import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
 
 interface FriendsTabsProps {
@@ -7,6 +9,7 @@ interface FriendsTabsProps {
     mogged: FriendData[];
     equals: FriendData[];
     userCommits: number;
+    onBack: () => void;
 }
 
 const TAB_CONFIG = [
@@ -15,7 +18,7 @@ const TAB_CONFIG = [
     { value: "equals",  label: "Equals",  title: "Equals",  description: "Here is who is even with you" },
 ] as const;
 
-export function FriendsTabs({ moggers, mogged, equals, userCommits }: FriendsTabsProps) {
+export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: FriendsTabsProps) {
     const friendMap = { moggers, mogged, equals };
 
     const activeTabs = TAB_CONFIG.filter(tab => friendMap[tab.value].length > 0);
@@ -25,11 +28,16 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits }: FriendsTab
     return (
         <div className="flex flex-col gap-4 max-w-xl">
             <Tabs defaultValue={activeTabs[0].value}>
-                <TabsList>
-                    {activeTabs.map(tab => (
-                        <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
-                    ))}
-                </TabsList>
+                <div className="flex items-center gap-2">
+                    <Button variant="outline" size="icon" onClick={onBack}>
+                        <ArrowLeft />
+                    </Button>
+                    <TabsList>
+                        {activeTabs.map(tab => (
+                            <TabsTrigger key={tab.value} value={tab.value}>{tab.label}</TabsTrigger>
+                        ))}
+                    </TabsList>
+                </div>
                 {activeTabs.map(tab => (
                     <TabsContent key={tab.value} value={tab.value}>
                         <FriendCarousel

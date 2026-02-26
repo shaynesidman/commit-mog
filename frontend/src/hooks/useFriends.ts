@@ -30,5 +30,13 @@ export function useFriends() {
         }
     };
 
-    return { username, setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends };
+    const reset = () => {
+        setUserData(null);
+        setMoggers([]);
+        setMogged([]);
+        setEquals([]);
+        setUsername("");
+    };
+
+    return { username, setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends, reset };
 }

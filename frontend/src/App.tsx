@@ -4,7 +4,7 @@ import { FriendsTabs } from "./components/friends-tabs";
 import { Spinner } from "./components/ui/spinner";
 
 export default function App() {
-    const { setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends } = useFriends();
+    const { setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends, reset } = useFriends();
 
     return (
         <main className="w-full pt-8">
@@ -17,6 +17,7 @@ export default function App() {
                             mogged={mogged}
                             equals={equals}
                             userCommits={userData.commits}
+                            onBack={reset}
                         />
                     )}
                 </section>
