@@ -28,8 +28,20 @@ export function FriendsTabs({ moggers, mogged, equals }: FriendsTabsProps) {
                         description="Here is who mogged you"
                     />
                 </TabsContent>
-                <TabsContent value="mogged" />
-                <TabsContent value="equals" />
+                <TabsContent value="mogged">
+                    <FriendCarousel
+                        friends={mogged}
+                        title="Mogged"
+                        description="Here is who you mogged"
+                    />
+                </TabsContent>
+                <TabsContent value="equals">
+                    <FriendCarousel
+                        friends={equals}
+                        title="Equals"
+                        description="Here is who is even with you"
+                    />
+                </TabsContent>
             </Tabs>
         </div>
     );
