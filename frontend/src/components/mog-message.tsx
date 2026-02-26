@@ -21,7 +21,8 @@ const MESSAGES: Record<Tab, Array<(name: string) => string>> = {
         (name) => `This is prime Marlon-level mogging. You ruined ${name}.`,
         (name) => `You're swe-maxxing. Tell ${name} to make some more contributions.`,
         (name) => `Tell ${name} to get to bonesmashing.`,
-        (name) => `You're a gigachad. ${name} is a sub-5 committer.`
+        (name) => `You're a gigachad. ${name} is a sub-5 committer.`,
+        (_name) => `True Adam-level contributions. Maxing out the PSL scale.`,
     ],
     equals: [
         (name) => `You and ${name} are in a mog-off. Make a contribution to mog.`,
