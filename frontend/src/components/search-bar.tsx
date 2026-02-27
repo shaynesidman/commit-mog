@@ -9,7 +9,7 @@ interface SearchBarProps {
 
 export function SearchBar({ onChange, onSubmit }: SearchBarProps) {
     return (
-        <Field orientation="horizontal">
+        <Field orientation="horizontal" className="animate-in fade-in slide-in-from-top-6 duration-500">
             <Input
                 type="search"
                 placeholder="Enter your GitHub username"

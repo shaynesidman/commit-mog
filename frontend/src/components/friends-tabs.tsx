@@ -26,7 +26,7 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: Fr
     if (activeTabs.length === 0) return null;
 
     return (
-        <div className="flex flex-col gap-4 max-w-xl">
+        <div className="animate-in fade-in slide-in-from-bottom-6 duration-500 flex flex-col gap-4 max-w-xl">
             <Tabs defaultValue={activeTabs[0].value}>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="icon" onClick={onBack}>
@@ -39,7 +39,7 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: Fr
                     </TabsList>
                 </div>
                 {activeTabs.map(tab => (
-                    <TabsContent key={tab.value} value={tab.value}>
+                    <TabsContent key={tab.value} value={tab.value} className="animate-in fade-in duration-500">
                         <FriendCarousel
                             friends={friendMap[tab.value]}
                             title={tab.title}
