@@ -23,6 +23,7 @@ const MESSAGES: Record<Tab, Array<(name: string) => string>> = {
         (name) => `Tell ${name} to get to bonesmashing.`,
         (name) => `You're a gigachad. ${name} is a sub-5 committer.`,
         (_name) => `True Adam-level contributions. Maxing out the PSL scale.`,
+        (_name) => `They need to nerf you and Marlon.`
     ],
     equals: [
         (name) => `You and ${name} are in a mog-off. Make a contribution to mog.`,
