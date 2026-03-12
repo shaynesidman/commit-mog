@@ -7,7 +7,7 @@ export default function App() {
     const { setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends, reset } = useFriends();
 
     return (
-        <main className="w-full pt-8">
+        <main className="w-full">
             {!isLoading && (
                 <section className="min-h-screen mx-auto max-w-xl flex flex-col justify-center items-center gap-8">
                     {!userData && <SearchBar onChange={setUsername} onSubmit={fetchFriends} />}
