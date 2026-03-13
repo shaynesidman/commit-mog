@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { type FriendData } from "../components/friend-card";
 
+export type Period = "week" | "month" | "year";
+
 export function useFriends() {
     const [username, setUsername] = useState("");
+    const [period, setPeriod] = useState<Period>("year");
     const [isLoading, setIsLoading] = useState(false);
     const [userData, setUserData] = useState<FriendData | null>(null);
     const [moggers, setMoggers] = useState<FriendData[]>([]);
@@ -12,7 +15,7 @@ export function useFriends() {
     const fetchFriends = async () => {
         setIsLoading(true);
         try {
-            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${username}`);
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/${username}?period=${period}`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -38,5 +41,5 @@ export function useFriends() {
         setUsername("");
     };
 
-    return { username, setUsername, isLoading, userData, moggers, mogged, equals, fetchFriends, reset };
+    return { username, setUsername, period, setPeriod, isLoading, userData, moggers, mogged, equals, fetchFriends, reset };
 }
