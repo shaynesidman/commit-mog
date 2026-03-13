@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-from magnum import Magnum
+from mangum import Mangum
 import requests
 import os
 from datetime import datetime, timedelta, timezone
@@ -160,4 +160,4 @@ def get_user_commits(username: str, headers: dict, from_date: str = None, to_dat
     return { "username": username, "commits": total_commits }
 
 
-handler = Magnum(app, lifespan="off")
+handler = Mangum(app, lifespan="off")

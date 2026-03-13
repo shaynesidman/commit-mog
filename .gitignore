@@ -26,6 +26,10 @@ yarn-error.log*
 # python
 **__pycache__
 
+# SAM build artifacts
+.aws-sam/
+samconfig.toml
+
 # Logs
 logs
 *.log
