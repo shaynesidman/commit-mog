@@ -16,7 +16,7 @@ Resources:
       Runtime: python3.13
       Environment:
         Variables:
-          GITHUB_TOKEN: '{{resolve:ssm:/commit-mog/github-token}}'
+          GITHUB_TOKEN: '{{resolve:secretsmanager:/commit-mog/github-token}}'
       Events:
         Api:
           Type: HttpApi
@@ -28,5 +28,5 @@ Resources:
 
 Outputs:
   ApiUrl:
-    Description: API Gateway endpoint URL (set this as VITE_BACKEND_URL in Vercel)
+    Description: API Gateway endpoint URL
     Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
