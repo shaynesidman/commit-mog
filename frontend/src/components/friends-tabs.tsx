@@ -3,12 +3,14 @@ import { type FriendData } from "./friend-card";
 import { FriendCarousel } from "./friend-carousel";
 import { Button } from "./ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
+import { type Period } from "../hooks/useFriends";
 
 interface FriendsTabsProps {
     moggers: FriendData[];
     mogged: FriendData[];
     equals: FriendData[];
     userCommits: number;
+    period: Period;
     onBack: () => void;
 }
 
@@ -18,7 +20,7 @@ const TAB_CONFIG = [
     { value: "equals",  label: "Equals",  title: "Equals",  description: "Here is who is even with you" },
 ] as const;
 
-export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: FriendsTabsProps) {
+export function FriendsTabs({ moggers, mogged, equals, userCommits, period, onBack }: FriendsTabsProps) {
     const friendMap = { moggers, mogged, equals };
 
     const activeTabs = TAB_CONFIG.filter(tab => friendMap[tab.value].length > 0);
@@ -45,6 +47,7 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits, onBack }: Fr
                             title={tab.title}
                             description={tab.description}
                             userCommits={userCommits}
+                            period={period}
                             tab={tab.value}
                         />
                     </TabsContent>

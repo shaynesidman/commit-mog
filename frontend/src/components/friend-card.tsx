@@ -1,5 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { type Period } from "../hooks/useFriends";
+
+const PERIOD_LABEL: Record<Period, string> = {
+    week: "Commits this week",
+    month: "Commits this month",
+    year: "Commits this year",
+};
 
 export type FriendData = {
     username: string;
@@ -10,9 +17,11 @@ export type FriendData = {
 
 export function FriendCard({
     friend,
+    period = "year",
     variant = "default",
 }: {
     friend: FriendData;
+    period?: Period;
     variant?: "default" | "featured";
 }) {
     const isFeatured = variant === "featured";
@@ -49,7 +58,7 @@ export function FriendCard({
             <CardContent>
                 <div className="flex items-center justify-between">
                     <span className={isFeatured ? "text-base text-muted-foreground" : "text-sm text-muted-foreground"}>
-                        Commits this year
+                        {PERIOD_LABEL[period]}
                     </span>
                     <span className={isFeatured ? "text-4xl font-bold" : "text-2xl font-bold"}>
                         {friend.commits.toLocaleString()}

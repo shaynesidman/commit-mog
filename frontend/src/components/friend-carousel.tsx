@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { FriendCard, type FriendData } from "./friend-card";
+import { type Period } from "../hooks/useFriends";
 import { MogMessage } from "./mog-message";
 import {
     Card,
@@ -22,10 +23,11 @@ interface FriendCarouselProps {
     title: string;
     description: string;
     userCommits?: number;
+    period: Period;
     tab: "moggers" | "mogged" | "equals";
 }
 
-export function FriendCarousel({ friends, title, description, userCommits, tab }: FriendCarouselProps) {
+export function FriendCarousel({ friends, title, description, userCommits, period, tab }: FriendCarouselProps) {
     const [api, setApi] = useState<CarouselApi>();
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -57,7 +59,7 @@ export function FriendCarousel({ friends, title, description, userCommits, tab }
                     <CarouselContent>
                         {friends.map((friend) => (
                             <CarouselItem key={friend.username}>
-                                <FriendCard friend={friend} />
+                                <FriendCard friend={friend} period={period} />
                             </CarouselItem>
                         ))}
                     </CarouselContent>
