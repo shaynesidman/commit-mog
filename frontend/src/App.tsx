@@ -12,7 +12,7 @@ export default function App() {
             {!isLoading && (
                 <section className="min-h-screen mx-auto max-w-xl flex flex-col justify-center items-center gap-8">
                     {!userData && (
-                        <div className="w-full flex flex-col gap-4">
+                        <div className="w-full flex flex-col gap-4 animate-in fade-in slide-in-from-top-6 duration-500">
                             <PeriodSelector value={period} onChange={setPeriod} />
                             <SearchBar onChange={setUsername} onSubmit={fetchFriends} />
                         </div>
