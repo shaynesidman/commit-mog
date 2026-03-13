@@ -9,13 +9,15 @@ interface SearchBarProps {
 
 export function SearchBar({ onChange, onSubmit }: SearchBarProps) {
     return (
-        <Field orientation="horizontal">
-            <Input
-                type="search"
-                placeholder="Enter your GitHub username"
-                onChange={(e) => onChange(e.target.value)}
-            />
-            <Button onClick={onSubmit}>Mog</Button>
-        </Field>
+        <form onSubmit={onSubmit}>
+            <Field orientation="horizontal">
+                <Input
+                    type="search"
+                    placeholder="Enter your GitHub username"
+                    onChange={(e) => onChange(e.target.value)}
+                />
+                <Button type="submit">Mog</Button>
+            </Field>
+        </form>
     );
 }
