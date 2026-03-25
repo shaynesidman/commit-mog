@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from mangum import Mangum
+from a2wsgi import WSGIMiddleware
 import requests
 import os
 from datetime import datetime, timedelta, timezone
@@ -160,4 +161,4 @@ def get_user_commits(username: str, headers: dict, from_date: str = None, to_dat
     return { "username": username, "commits": total_commits }
 
 
-handler = Mangum(app, lifespan="off")
+handler = Mangum(WSGIMiddleware(app), lifespan="off")
