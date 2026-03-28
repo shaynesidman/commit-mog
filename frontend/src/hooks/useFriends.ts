@@ -23,6 +23,11 @@ export function useFriends() {
                 throw new Error(data.error || "Failed to fetch friends");
             }
 
+            if (data.warning) {
+                console.log("WARNING")
+                toast.warning(data.warning);
+            }
+
             setUserData(data.user);
             setMoggers(data.friends.filter((friend: FriendData) => friend.commits > data.user.commits));
             setMogged(data.friends.filter((friend: FriendData) => friend.commits < data.user.commits));

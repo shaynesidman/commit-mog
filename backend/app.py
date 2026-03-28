@@ -10,9 +10,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app)
+CORS(app) # Maybe TODO: restrict origin domains to just frontend
 
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+FRIENDS_LIMIT = 50
 
 def get_date_range(period: str):
     """
@@ -24,7 +25,7 @@ def get_date_range(period: str):
         from_date = now - timedelta(weeks=1)
     elif period == "month":
         from_date = now - timedelta(days=30)
-    else:  # default: year
+    else:  # default is year
         from_date = now - timedelta(days=365)
     return from_date.isoformat(), now.isoformat()
 
@@ -36,7 +37,6 @@ def compare(username: str):
     Parameters: username (string), period (query param: 'week'|'month'|'year', default 'year')
     Returns: JSON object of user and their friends' commits
     """
-
     if not GITHUB_TOKEN:
         return jsonify({ "error": "GitHub token is required for GitHub API" }), 500
 
@@ -67,6 +67,13 @@ def compare(username: str):
         status = 404 if friends.get("error_code") in ("USER_NOT_FOUND", "NOT_FOLLOWING_ANYONE") else 500
         return jsonify(friends), status
 
+    # Warn if the user follows more than the limit (list is already capped by per_page)
+    total_following = user.get("following", 0)
+    print(user.get("following", 0))
+    warning = None
+    if total_following > FRIENDS_LIMIT:
+        warning = f"{username} follows {total_following} people, only comparing the first {FRIENDS_LIMIT}."
+
     # Get contributions for each friend
     friends_commits = []
     for friend in friends:
@@ -77,7 +84,10 @@ def compare(username: str):
         result["profile_url"] = friend["html_url"]
         friends_commits.append(result)
 
-    return jsonify({ "user": user_commits, "friends": friends_commits })
+    response = { "user": user_commits, "friends": friends_commits }
+    if warning:
+        response["warning"] = warning
+    return jsonify(response)
 
 
 def get_user_friends(username: str, headers: dict):
@@ -86,10 +96,9 @@ def get_user_friends(username: str, headers: dict):
     Parameters: username (string)
     Returns: List of user objects
     """
-
     GITHUB_FOLLOWING_URL = f"https://api.github.com/users/{username}/following"
-    
-    response = requests.get(GITHUB_FOLLOWING_URL, headers=headers)
+
+    response = requests.get(GITHUB_FOLLOWING_URL, headers=headers, params={"per_page": FRIENDS_LIMIT})
 
     if response.status_code == 404:
         return { "error": "User not found", "error_code": "USER_NOT_FOUND" }
@@ -111,7 +120,6 @@ def get_user_data(username: str, headers: dict):
     Parameters: username (string)
     Returns: List of user objects
     """
-
     GITHUB_USER_URL = f"https://api.github.com/users/{username}"
     
     # Fetch users from REST API since better for bulk data of one type
@@ -134,7 +142,6 @@ def get_user_commits(username: str, headers: dict, from_date: str = None, to_dat
     Parameters: username (string), from_date (ISO date, optional), to_date (ISO date, optional)
     Returns: Commit count (int)
     """
-
     GITHUB_GRAPHQL_URL = "https://api.github.com/graphql"
 
     query = """

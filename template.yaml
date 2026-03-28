@@ -6,6 +6,10 @@ Globals:
   Function:
     Timeout: 30
     MemorySize: 256
+  HttpApi:
+    DefaultRouteSettings:
+      ThrottlingBurstLimit: 20
+      ThrottlingRateLimit: 10
 
 Resources:
   CommitMogFunction:
