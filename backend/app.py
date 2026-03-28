@@ -54,7 +54,6 @@ def compare(username: str):
     # Get contributions for user
     user_commits = get_user_commits(username, headers, from_date, to_date)
     if "error" in user_commits:
-        print("hello")
         status = 404 if user_commits.get("error_code") == "USER_NOT_FOUND" else 500
         return jsonify(user_commits), status
 
