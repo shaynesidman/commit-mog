@@ -4,6 +4,7 @@ from mangum import Mangum
 from a2wsgi import WSGIMiddleware
 import requests
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timedelta, timezone
 from dotenv import load_dotenv
 
@@ -73,15 +74,22 @@ def compare(username: str):
     if total_following > FRIENDS_LIMIT:
         warning = f"{username} follows {total_following} people, only comparing the first {FRIENDS_LIMIT}."
 
-    # Get contributions for each friend
-    friends_commits = []
-    for friend in friends:
+    # Get contributions for each friend in parallel
+    def fetch_friend(friend):
         result = get_user_commits(friend["login"], headers, from_date, to_date)
         if "error" in result:
-            continue
+            return None
         result["avatar_url"] = friend["avatar_url"]
         result["profile_url"] = friend["html_url"]
-        friends_commits.append(result)
+        return result
+    
+    friends_commits = []
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        futures = {executor.submit(fetch_friend, friend): friend for friend in friends}
+        for future in as_completed(futures):
+            result = future.result()
+            if result is not None:
+                friends_commits.append(result)
 
     response = { "user": user_commits, "friends": friends_commits }
     if warning:
@@ -97,7 +105,7 @@ def get_user_friends(username: str, headers: dict):
     """
     GITHUB_FOLLOWING_URL = f"https://api.github.com/users/{username}/following"
 
-    response = requests.get(GITHUB_FOLLOWING_URL, headers=headers, params={"per_page": FRIENDS_LIMIT})
+    response = requests.get(GITHUB_FOLLOWING_URL, headers=headers, params={"per_page": FRIENDS_LIMIT}, timeout=10)
 
     if response.status_code == 404:
         return { "error": "User not found", "error_code": "USER_NOT_FOUND" }
@@ -122,7 +130,7 @@ def get_user_data(username: str, headers: dict):
     GITHUB_USER_URL = f"https://api.github.com/users/{username}"
     
     # Fetch users from REST API since better for bulk data of one type
-    response = requests.get(GITHUB_USER_URL, headers=headers)
+    response = requests.get(GITHUB_USER_URL, headers=headers, timeout=10)
 
     if response.status_code == 404:
         return { "error": f"GitHub user {username} not found", "error_code": "USER_NOT_FOUND" }
@@ -159,6 +167,7 @@ def get_user_commits(username: str, headers: dict, from_date: str = None, to_dat
         GITHUB_GRAPHQL_URL,
         headers=headers,
         json={"query": query, "variables": {"username": username, "from": from_date, "to": to_date}},
+        timeout=10,
     )
 
     if response.status_code != 200:
