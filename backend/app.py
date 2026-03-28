@@ -69,7 +69,6 @@ def compare(username: str):
 
     # Warn if the user follows more than the limit (list is already capped by per_page)
     total_following = user.get("following", 0)
-    print(user.get("following", 0))
     warning = None
     if total_following > FRIENDS_LIMIT:
         warning = f"{username} follows {total_following} people, only comparing the first {FRIENDS_LIMIT}."
