@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { type FriendData } from "../components/friend-card";
 
 export type Period = "week" | "month" | "year";
@@ -28,6 +29,7 @@ export function useFriends() {
             setEquals(data.friends.filter((friend: FriendData) => friend.commits == data.user.commits));
         } catch (error) {
             console.error(error);
+            toast.error(error instanceof Error ? error.message : "Failed to fetch friends");
         } finally {
             setIsLoading(false);
         }
