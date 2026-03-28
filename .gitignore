@@ -24,7 +24,9 @@ yarn-error.log*
 .DS_Store
 
 # python
-**__pycache__
+*__pycache__/
+*.pyc
+*.pyo
 
 # SAM build artifacts
 .aws-sam/
