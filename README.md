@@ -20,10 +20,9 @@ In looksmaxxer culture, to *mog* someone means to outshine them in some way. If 
 | Layer | Tech |
 |---|---|
 | Frontend | React, TypeScript, Vite, Tailwind CSS |
-| UI | Radix UI, Shadcn components, Embla Carousel, Sonner |
 | Backend | Python 3.13, Flask |
-| GitHub API | REST API v3 + GraphQL |
-| Deployment | AWS Lambda + API Gateway via AWS SAM |
+| GitHub API | REST API + GraphQL |
+| Deployment | Vercel, AWS Lambda + API Gateway via AWS SAM |
 
 ## How It Works
 
