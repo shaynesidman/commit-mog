@@ -66,7 +66,7 @@ export function FriendCarousel({ friends, title, description, userCommits, perio
                     <CarouselPrevious className="-left-12" />
                     <CarouselNext className="-right-12" />
                 </Carousel>
-                <div className="min-h-12 flex justify-center items-center">
+                <div className="min-h-16 sm:min-h-12 flex justify-center items-center">
                     {currentFriend && <MogMessage friend={currentFriend.username} tab={tab} />}
                 </div>
             </CardContent>
