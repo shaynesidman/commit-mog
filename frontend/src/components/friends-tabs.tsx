@@ -28,7 +28,7 @@ export function FriendsTabs({ moggers, mogged, equals, userCommits, period, onBa
     if (activeTabs.length === 0) return null;
 
     return (
-        <div className="animate-in fade-in slide-in-from-bottom-6 duration-500 flex flex-col gap-4 max-w-xl">
+        <div className="animate-in fade-in slide-in-from-bottom-6 duration-500 flex flex-col gap-4 w-full max-w-xl">
             <Tabs defaultValue={activeTabs[0].value}>
                 <div className="flex items-center gap-2">
                     <Button variant="outline" size="icon" onClick={onBack}>

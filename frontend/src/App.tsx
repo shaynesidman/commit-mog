@@ -10,7 +10,7 @@ export default function App() {
 
     return (
         <>
-            <main className="w-full">
+            <main className="w-full px-4 sm:px-0">
                 {!isLoading && (
                     <section className="min-h-screen mx-auto max-w-xl flex flex-col justify-center items-center gap-8">
                         {!userData && (

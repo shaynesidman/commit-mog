@@ -41,8 +41,8 @@ export function FriendCarousel({ friends, title, description, userCommits, perio
     const currentFriend = friends[currentIndex];
 
     return (
-        <Card className="px-10">
-            <CardHeader className="flex flex-row items-start justify-between">
+        <Card className="px-8 sm:px-10">
+            <CardHeader className="flex flex-row items-start justify-between gap-2">
                 <div className="space-y-2">
                     <CardTitle>{title}</CardTitle>
                     <CardDescription>{description}</CardDescription>
@@ -63,8 +63,8 @@ export function FriendCarousel({ friends, title, description, userCommits, perio
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
+                    <CarouselPrevious className="-left-12" />
+                    <CarouselNext className="-right-12" />
                 </Carousel>
                 <div className="min-h-12 flex justify-center items-center">
                     {currentFriend && <MogMessage friend={currentFriend.username} tab={tab} />}
