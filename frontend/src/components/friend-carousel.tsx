@@ -38,6 +38,16 @@ export function FriendCarousel({ friends, title, description, userCommits, perio
         return () => { api.off("select", onSelect); };
     }, [api]);
 
+    useEffect(() => {
+        if (!api) return;
+        const onKeyDown = (e: KeyboardEvent) => {
+            if (e.key === "ArrowLeft") api.scrollPrev();
+            else if (e.key === "ArrowRight") api.scrollNext();
+        };
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [api]);
+
     const currentFriend = friends[currentIndex];
 
     return (
